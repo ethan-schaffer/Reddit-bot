@@ -990,7 +990,7 @@ def bot_login():
 	print("Logged in!")
 	return r
 
-def run_bot(r, comments_replied_to, rulesList):
+def run_bot(r, comments_replied_to, rulesList, count):
 	print("Obtaining 25 comments...")
 
 	for comment in r.subreddit('ftc').comments(limit=10):
@@ -1063,7 +1063,9 @@ def run_bot(r, comments_replied_to, rulesList):
 				print("Failed to post, posting too often")
 				print("Sleeping for 30 seconds, then will try again")
 				time.sleep(30)
-				return
+				print("That was try number " + count)
+				print("Totaling a " + count*30 + "second wait time")
+				return count+1
 			print("Replied to comment " + comment.id)
 			comments_replied_to.append(comment.id)
 			with open ("comments_replied_to.txt", "a") as f:
@@ -1071,6 +1073,7 @@ def run_bot(r, comments_replied_to, rulesList):
 	for i in range(10):
 		print(i+1)
 		time.sleep(1)
+	return 0
 	#Sleep for 10 seconds...
 
 def get_saved_comments():
@@ -1093,5 +1096,6 @@ for rulesetKey in range(4):
 
 r = bot_login()
 comments_replied_to = get_saved_comments()
+count = 0
 while True:
-	run_bot(r, comments_replied_to, rules)
+	count = run_bot(r, comments_replied_to, rules, count)
