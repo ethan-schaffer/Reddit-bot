@@ -7,13 +7,14 @@ import time
 import os
 import re
 import sys
+import datetime
 
 def getAward(name):
 	if(name.lower()=="inspire"):
 		return getAwardInspire()
 	if(name.lower()=="think"):
 		return getAwardThink()
-	if(name.lower()=="deisgn"):
+	if(name.lower()=="design"):
 		return getAwardDesign()
 	if(name.lower()=="innovate"):
 		return getAwardInnovate()
@@ -405,15 +406,15 @@ def getRuleRE9():
 	c. Legacy MATRIX DC Motor/Servo Controller based systems powered by a 9.6 VDC Battery must only use MATRIX 9.6 VDC motors in any combination. No other DC motors are allowed for use with the Legacy MATRIX DC Motor/Servo Controller.
 	d. No other DC motors are allowed. The allowed battery, motor controller, and DC motor combinations are summarized in the following table. The check symbol (✓) indicates the DC motor is allowed with the controllers and batteries listed in the rows above it. The “X” symbol is present for DC motors that are not allowed for the listed controller and battery combination.
 
-	|Controllers:|Core Motor Controller, REV Expansion Hub, and/or Legacy TETRIX DC Motor Controller|Legacy MATRIX DC Motor/Servo Controller (Unified Module)||
-	------------|---|----|----
-	|Batteries:|TETRIX 12 VDC, MATRIX 12 VDC, or REV Robotics 12 VDC|MATRIX 9.6 VDC|TETRIX 12 VDC, MATRIX 12 VDC, or REV Robotics 12 VDC|
-	|TETRIX 12V|✓|X|✓|
-	|AndyMark NeveRest Series 12V|✓|X|✓|
-	|Modern Robotics/MATRIX 12V|✓|X|✓|
-	|REV HD Hex 12V|✓|X|✓|
-	|REV Core Hex 12V|✓|X|✓|
-	|MATRIX 9.6V|X|✓|X|
+|Controllers:|Core Motor Controller, REV Expansion Hub, and/or Legacy TETRIX DC Motor Controller|Legacy MATRIX DC Motor/Servo Controller (Unified Module)||
+------------|---|----|----
+|Batteries:|TETRIX 12 VDC, MATRIX 12 VDC, or REV Robotics 12 VDC|MATRIX 9.6 VDC|TETRIX 12 VDC, MATRIX 12 VDC, or REV Robotics 12 VDC|
+|TETRIX 12V|✓|X|✓|
+|AndyMark NeveRest Series 12V|✓|X|✓|
+|Modern Robotics/MATRIX 12V|✓|X|✓|
+|REV HD Hex 12V|✓|X|✓|
+|REV Core Hex 12V|✓|X|✓|
+|MATRIX 9.6V|X|✓|X|
 	"""
 	return text
 def getRuleRE10():
@@ -990,91 +991,110 @@ def bot_login():
 	print("Logged in!")
 	return r
 
-def run_bot(r, comments_replied_to, rulesList, count):
-	print("Obtaining 25 comments...")
-
-	for comment in r.subreddit('ftc').comments(limit=10):
-		words = comment.body.lower().split(" ")
-		reply_text = ""
-		if "!award" == words[0] and comment.id not in comments_replied_to and comment.author != r.user.me():
-			if(len(words)>1):
-				for word in words[1:]:
-					awardText = getAward(word.lower())
-					if(awardText != ""):
-					    reply_text+= "\n" + word[0].upper() + word[1:].lower() + " award:\n" + awardText
-			else:
-				reply_text+="That was rude! Please give me input"
-		if "!rule" == words[0] and comment.id not in comments_replied_to and comment.author != r.user.me():
-			if(len(words)>1):
-				termInList = 0
-				rulesToReplyWith = []
-				for word in words[1:]:
-
-					termInList+=1
-					foundSomething = False
-					terms = ["t", "re", "rm", "rg"]
-
-					for term in terms:
-						if(term in word):
-							match = re.search(term+'(\d+)', word)
-							if match:
-								reply_text += "\nRule " + word + ": \n" + getRule(term,( match.group(1)))
-								foundSomething = True
-					if not foundSomething:
-						wordSubset = []
-						for rule in rulesList:
-							if(word.lower() in rule[1].lower()):
-								wordSubset.append(rule[0])
+def handle_comment(comment, rulesList):
+	words = comment.body.lower().split(" ")
+	reply_text = ""
+	if "!award" == words[0] and comment.id not in comments_replied_to and comment.author != r.user.me():
+		if(len(words)>1):
+			for word in words[1:]:
+				awardText = getAward(word.lower())
+				if(awardText != ""):
+				    reply_text+= "\n" + word[0].upper() + word[1:].lower() + " award:\n" + awardText
+		else:
+			reply_text+="That was rude! Please give me input"
+	if "!rule" == words[0] and comment.id not in comments_replied_to and comment.author != r.user.me():
+		if(len(words)>1):
+			termInList = 0
+			rulesToReplyWith = []
+			for word in words[1:]:
+				termInList+=1
+				foundSomething = False
+				terms = ["t", "re", "rm", "rg"]
+				for term in terms:
+					if(term in word):
+						match = re.search(term+'(\d+)', word)
+						if match:
+							reply_text += "\nRule " + word + ": \n" + getRule(term,( match.group(1)))
+							foundSomething = True
+				if not foundSomething:
+					wordSubset = []
+					for rule in rulesList:
+						if(word.lower() in rule[1].lower()):
+							wordSubset.append(rule[0])
+					if(len(wordSubset)>0):
 						rulesToReplyWith.append(wordSubset)
-				goodRules = []
+			goodRules = []
+			if(len(rulesToReplyWith) == 0):
+				reply_text = "Sorry, I couldn't find a rule that fit that description. "
+				reply_text+= "\n\n&nbsp;&nbsp;\n\n^^Bot ^^by ^^Ethan ^^Schaffer. ^^Check ^^out ^^the ^^[GitHub](https://github.com/ethan-schaffer/reddit-bot) ^^or ^^send ^^me ^^a ^^PM!"
+				print("\n\n\n")
+				print(comment.body)
+				print("\n\n\n")
+				try:
+					comment.reply(reply_text)
+					print("Replied to comment " + comment.id)
+					comments_replied_to.append(comment.id)
+					with open ("comments_replied_to.txt", "a") as f:
+						f.write(comment.id + "\n")
+				except:
+					print("failed to comment")
+					return
+				return
+			## This code is very, very, gross. I am sorry in advance...
+			if(len(rulesToReplyWith) < 5):
+				for ruleSet in rulesToReplyWith:
+					for rule in ruleSet:
+						#rule is the tuple
+						isGood = True
+						for setOfRules in rulesToReplyWith:
+							if rule not in setOfRules:
+								isGood = False
+						if isGood:
+							goodRules.append(rule)
 
-				## This code is very, very, gross. I am sorry in advance...
-				if(len(rulesToReplyWith) < 5):
-					for ruleSet in rulesToReplyWith:
-						for rule in ruleSet:
-							#rule is the tuple
-							isGood = True
-							for setOfRules in rulesToReplyWith:
-								if rule not in setOfRules:
-									isGood = False
-							if isGood:
-								goodRules.append(rule)
-
-					for goodRule in list(set(goodRules)):
-						#The set structure removes duplicates
-						ruleName = goodRule[0]+str(goodRule[1])
-						reply_text += "\nRule " + ruleName + ": \n" + getRule(goodRule[0], goodRule[1])
+				for goodRule in list(set(goodRules)):
+					#The set structure removes duplicates
+					ruleName = goodRule[0]+str(goodRule[1])
+					reply_text += "\nRule " + ruleName + ": \n" + getRule(goodRule[0], goodRule[1])
 					# End of gross code
-				else:
-					if(reply_text!=""):
-						reply_text+="\n"
-					reply_text+="That was a lot of keywords, please try using less than 5 so that I can find what you need a bit faster\n"
 			else:
-				reply_text+="That was rude! Please give me input"
-		if(reply_text != ""):
-			reply_text+= "\n\n&nbsp;&nbsp;\n\n^^Bot ^^by ^^Ethan ^^Schaffer. ^^Check ^^out ^^the ^^[GitHub](https://github.com/ethan-schaffer/reddit-bot) ^^or ^^send ^^me ^^a ^^PM!"
-			print("Going to comment:")
-			print(reply_text)
+				if(reply_text!=""):
+					reply_text+="\n"
+				reply_text+="That was a lot of keywords, please try using less than 5 so that I can find what you need a bit faster\n"
+		else:
+			reply_text+="That was rude! Please give me input"
+	if(reply_text != ""):
+		reply_text+= "\n\n&nbsp;&nbsp;\n\n^^Bot ^^by ^^Ethan ^^Schaffer. ^^Check ^^out ^^the ^^[GitHub](https://github.com/ethan-schaffer/reddit-bot) ^^or ^^send ^^me ^^a ^^PM!"
+		print("Going to comment:")
+		print(reply_text)
 			## comment.reply("Here's what I found: \n" + reply_text)
-			## Uncomment the above to check the time left
-			try :
-				comment.reply("Here's what I found: \n" + reply_text)
-			except:
-				print("Failed to post, posting too often")
-				print("Sleeping for 30 seconds, then will try again")
-				time.sleep(30)
-				print("That was try number " + count)
-				print("Totaling a " + count*30 + "second wait time")
-				return count+1
-			print("Replied to comment " + comment.id)
-			comments_replied_to.append(comment.id)
-			with open ("comments_replied_to.txt", "a") as f:
-				f.write(comment.id + "\n")
-	for i in range(10):
-		print(i+1)
-		time.sleep(1)
+		## Uncomment the above to check the time left
+		try :
+			comment.reply("Here's what I found: \n" + reply_text)
+		except:
+			print("Failed to post, posting too often")
+			print("Sleeping for 30 seconds, then will try again")
+			time.sleep(30)
+			return
+		print("Replied to comment " + comment.id)
+		comments_replied_to.append(comment.id)
+		with open ("comments_replied_to.txt", "a") as f:
+			f.write(comment.id + "\n")
+		return
+def run_bot(r, comments_replied_to, rulesList, count, sub):
+	how_many = 50
+	print("Obtaining" + str(how_many) + "comments from reddit.com/r/ftc...")
+	start_time = time.time()
+	for comment in r.subreddit('ftc').comments(limit=how_many):
+		handle_comment(comment, rulesList)
+	print("Getting comments from reddit.com/r/ftc took " + time.time()-start_time )
+	start_time = time.time()
+	print("Obtaining" + str(how_many) + "comments from reddit.com/r/testingground4bots...")
+	for comment in r.subreddit('testingground4bots').comments(limit=how_many):
+		handle_comment(comment, rulesList)
+	print("Getting comments from reddit.com/r/ftc took " + time.time()-start_time )
+	time.sleep(10)
 	return 0
-	#Sleep for 10 seconds...
 
 def get_saved_comments():
 	if not os.path.isfile("comments_replied_to.txt"):
@@ -1098,4 +1118,5 @@ r = bot_login()
 comments_replied_to = get_saved_comments()
 count = 0
 while True:
-	count = run_bot(r, comments_replied_to, rules, count)
+	count = run_bot(r, comments_replied_to, rules, count, 'ftc')
+	count = run_bot(r, comments_replied_to, rules, count, 'testingground4bots')
