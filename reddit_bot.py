@@ -7,7 +7,6 @@ import time
 import os
 import re
 import sys
-import datetime
 
 def getAward(name):
 	if(name.lower()=="inspire"):
@@ -1004,10 +1003,8 @@ def handle_comment(comment, rulesList):
 			reply_text+="That was rude! Please give me input"
 	if "!rule" == words[0] and comment.id not in comments_replied_to and comment.author != r.user.me():
 		if(len(words)>1):
-			termInList = 0
 			rulesToReplyWith = []
 			for word in words[1:]:
-				termInList+=1
 				foundSomething = False
 				terms = ["t", "re", "rm", "rg"]
 				for term in terms:
@@ -1083,16 +1080,16 @@ def handle_comment(comment, rulesList):
 		return
 def run_bot(r, comments_replied_to, rulesList, count, sub):
 	how_many = 50
-	print("Obtaining" + str(how_many) + "comments from reddit.com/r/ftc...")
+	print("Obtaining " + str(how_many) + " comments from reddit.com/r/ftc...")
 	start_time = time.time()
 	for comment in r.subreddit('ftc').comments(limit=how_many):
 		handle_comment(comment, rulesList)
-	print("Getting comments from reddit.com/r/ftc took " + time.time()-start_time )
+	print("Getting comments from reddit.com/r/ftc took " + str(time.time()-start_time) + " seconds")
 	start_time = time.time()
-	print("Obtaining" + str(how_many) + "comments from reddit.com/r/testingground4bots...")
+	print("Obtaining " + str(how_many) + " comments from reddit.com/r/testingground4bots...")
 	for comment in r.subreddit('testingground4bots').comments(limit=how_many):
 		handle_comment(comment, rulesList)
-	print("Getting comments from reddit.com/r/ftc took " + time.time()-start_time )
+	print("Getting comments from reddit.com/r/testingground4bots took " + str(time.time()-start_time) + " seconds")
 	time.sleep(10)
 	return 0
 
@@ -1116,7 +1113,6 @@ for rulesetKey in range(4):
 
 r = bot_login()
 comments_replied_to = get_saved_comments()
-count = 0
 while True:
 	count = run_bot(r, comments_replied_to, rules, count, 'ftc')
 	count = run_bot(r, comments_replied_to, rules, count, 'testingground4bots')
