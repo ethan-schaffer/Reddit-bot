@@ -564,7 +564,11 @@ Violations of this Rule can result in penalties to the Team, and/or the issuance
 Egregious behavior includes, but is not limited to, repeated and/or flagrant violation of gameRules, unsafe behavior or actions, uncivil behavior towards Volunteers, Competition personnel, or Event attendees.
 """) )
 rules.append( ("T2","""
-Yellow Cards and Red Cards are used in the FIRST Tech Challenge to manage Team and Robot behavior that does not align with the mission of FIRST. Yellow and Red Cards are not limited to just the Competition Area. Teams that display egregious behavior in the Pit Area, Judging Rooms, stands, or any other location of the Event can be issued a Yellow or Red Card for egregious behavior. Egregious or repeated (3 or more) Robot or Team member behavior at the Event can result in a Yellow and/or Red Card. The Head Referee may assign a Yellow Card as a warning, or a Red Card for Disqualification in a match. A Yellow Card or Red Card is signaled by the Head Referee standing in front of the Team’s Alliance Station and holding a Yellow Card and/or Red Card in the air. Yellow Cards are additive, meaning that a second Yellow Card is automatically converted to a Red Card. A Team is issued a Red Card for any subsequent incident in which they receive an additional Yellow Card, including earning a second Yellow Card during a single match. To issue the second yellow card, the Head Referee will stand in front of the Team’s Alliance Station and hold a Yellow Card and Red Card. The Head Referee will signal the second Yellow Card after the match has ended. A Team that has received either a Yellow Card or a Red Card carries a Yellow Card into following matches, except as noted below. A Red Card results in match Disqualification. Multiple Red Cards may lead to Tournament Disqualification. Once a Team receives a Yellow Card or Red Card, the Team number is presented with a yellow background on the audience screen at the beginning of all following matches. This is a reminder to the Team, referees, and audience the Team carries a Yellow Card. Yellow Cards do not carry over from the Qualification Matches to the Elimination Matches. During the Elimination Matches, Yellow and Red Cards count against the entire Alliance, not to a specific Team. If a Team receives a Yellow Card or Red Card, it results in the entire Alliance receiving the Yellow Card or Red Card for that match. If two different Teams on the same Alliance are issued Yellow Cards, the entire Alliance is issued a Red Card. A Red Card results in zero (0) points for that match, and the Alliance loses the match. If both Alliances receive Red Cards, the Alliance which committed the action earning the Red Card first chronologically loses the match.
+Yellow Cards and Red Cards are used in the FIRST Tech Challenge to manage Team and Robot behavior that does not align with the mission of FIRST. 
+
+Yellow and Red Cards are not limited to just the Competition Area. 
+
+Teams that display egregious behavior in the Pit Area, Judging Rooms, stands, or any other location of the Event can be issued a Yellow or Red Card for egregious behavior. Egregious or repeated (3 or more) Robot or Team member behavior at the Event can result in a Yellow and/or Red Card. The Head Referee may assign a Yellow Card as a warning, or a Red Card for Disqualification in a match. A Yellow Card or Red Card is signaled by the Head Referee standing in front of the Team’s Alliance Station and holding a Yellow Card and/or Red Card in the air. Yellow Cards are additive, meaning that a second Yellow Card is automatically converted to a Red Card. A Team is issued a Red Card for any subsequent incident in which they receive an additional Yellow Card, including earning a second Yellow Card during a single match. To issue the second yellow card, the Head Referee will stand in front of the Team’s Alliance Station and hold a Yellow Card and Red Card. The Head Referee will signal the second Yellow Card after the match has ended. A Team that has received either a Yellow Card or a Red Card carries a Yellow Card into following matches, except as noted below. A Red Card results in match Disqualification. Multiple Red Cards may lead to Tournament Disqualification. Once a Team receives a Yellow Card or Red Card, the Team number is presented with a yellow background on the audience screen at the beginning of all following matches. This is a reminder to the Team, referees, and audience the Team carries a Yellow Card. Yellow Cards do not carry over from the Qualification Matches to the Elimination Matches. During the Elimination Matches, Yellow and Red Cards count against the entire Alliance, not to a specific Team. If a Team receives a Yellow Card or Red Card, it results in the entire Alliance receiving the Yellow Card or Red Card for that match. If two different Teams on the same Alliance are issued Yellow Cards, the entire Alliance is issued a Red Card. A Red Card results in zero (0) points for that match, and the Alliance loses the match. If both Alliances receive Red Cards, the Alliance which committed the action earning the Red Card first chronologically loses the match.
 """) )
 rules.append( ("T3","""
 Referees have final game play and scoring authority during the Competition.
@@ -657,7 +661,15 @@ rules.append( ("T14","""
 During the elimination rounds, each Alliance will be allotted ONE time - out of no more than three minutes (3:00). Time-outs must be called at least two minutes (2:00) before their next m atch ’s starting time. The time-out begins at the time their match was going to start.
 """) )
 rules.append( ("T15","""
-All Team members, coaches, and their guests must wear ANSI Z 87.1 certified safety glasses while in the Pit or Competition Area. Prescription glasses with ANSI Z 87.1 approved commercial off the shelf side shields are also allowed. NOTE: FIRST requires all Teams to bring and supply ANSI - approved safety glasses for its Team members, mentors, and guests for each Competition. Tinted lenses are allowed as long as Event personnel can see the Volunteer’s, spectator’s, or Team member’s eyes through the safety glasses. Sunglasses or deeply shaded safety glasses used in our indoor Event environment are not acceptable.
+All Team members, coaches, and their guests must wear ANSI Z 87.1 certified safety glasses while in the Pit or Competition Area. 
+
+Prescription glasses with ANSI Z 87.1 approved commercial off the shelf side shields are also allowed.
+
+NOTE: FIRST requires all Teams to bring and supply ANSI - approved safety glasses for its Team members, mentors, and guests for each Competition. 
+
+Tinted lenses are allowed as long as Event personnel can see the Volunteer’s, spectator’s, or Team member’s eyes through the safety glasses. 
+
+Sunglasses or deeply shaded safety glasses used in our indoor Event environment are not acceptable.
 """) )
 rules.append( ("T16","""
 Skateboards, roller skates, ‘hover boards’, and drones are not allowed at any Tournament. These items can create safety hazards to the Teams, spectators, or Volunteers attending the Event.
@@ -703,111 +715,73 @@ def bot_login():
 			client_id = config.client_id,
 			client_secret = config.client_secret,
 			user_agent = "FTC Rules Bot")
-	print("Logged in!")
 	return r
 
-def handle_comment(comment, rulesList):
+def handle_comment(comment, rules_list, awards_list, comments_replied_to):
 	words = comment.body.lower().split(" ")
+	terms = []
+	if (words[0].lower() == "!award") and comment.id not in comments_replied_to and comment.author != r.user.me():
+		terms = get_rules_list(awards_list, words[1:])
+	elif (words[0].lower() == "!rule") and comment.id not in comments_replied_to and comment.author != r.user.me():
+		terms = get_rules_list(rules_list, words[1:])
+	else:
+		return False
 	reply_text = ""
-	if "!award" == words[0] and comment.id not in comments_replied_to and comment.author != r.user.me():
-		if(len(words)>1):
-			for word in words[1:]:
-				awardText = getAward(word.lower())
-				if(awardText != ""):
-				    reply_text+= "\n" + word[0].upper() + word[1:].lower() + " award:\n" + awardText
-		else:
-			reply_text+="That was rude! Please give me input"
-	if "!rule" == words[0] and comment.id not in comments_replied_to and comment.author != r.user.me():
-		if(len(words)>1):
-			rulesToReplyWith = []
-			for word in words[1:]:
-				foundSomething = False
-				terms = ["t", "re", "rm", "rg"]
-				for term in terms:
-					if(term in word):
-						match = re.search(term+'(\d+)', word)
-						if match:
-							reply_text += "\nRule " + word + ": \n" + getRule(term,( match.group(1)))
-							foundSomething = True
-				if not foundSomething:
-					wordSubset = []
-					for rule in rulesList:
-						if(word.lower() in rule[1].lower()):
-							wordSubset.append(rule[0])
-					if(len(wordSubset)>0):
-						rulesToReplyWith.append(wordSubset)
-			goodRules = []
-			if(len(rulesToReplyWith) == 0):
-				reply_text = "Sorry, I couldn't find a rule that fit that description. "
-				reply_text+= "\n\n&nbsp;&nbsp;\n\n^^Bot ^^by ^^Ethan ^^Schaffer. ^^Check ^^out ^^the ^^[GitHub](https://github.com/ethan-schaffer/reddit-bot) ^^or ^^send ^^me ^^a ^^PM!"
-				print("\n\n\n")
-				print(comment.body)
-				print("\n\n\n")
-				try:
-					comment.reply(reply_text)
-					print("Replied to comment " + comment.id)
-					comments_replied_to.append(comment.id)
-					with open ("comments_replied_to.txt", "a") as f:
-						f.write(comment.id + "\n")
-				except:
-					print("failed to comment")
-					return
-				return
-			## This code is very, very, gross. I am sorry in advance...
-			if(len(rulesToReplyWith) < 5):
-				for ruleSet in rulesToReplyWith:
-					for rule in ruleSet:
-						#rule is the tuple
-						isGood = True
-						for setOfRules in rulesToReplyWith:
-							if rule not in setOfRules:
-								isGood = False
-						if isGood:
-							goodRules.append(rule)
-
-				for goodRule in list(set(goodRules)):
-					#The set structure removes duplicates
-					ruleName = goodRule[0]+str(goodRule[1])
-					reply_text += "\nRule " + ruleName + ": \n" + getRule(goodRule[0], goodRule[1])
-					# End of gross code
-			else:
-				if(reply_text!=""):
-					reply_text+="\n"
-				reply_text+="That was a lot of keywords, please try using less than 5 so that I can find what you need a bit faster\n"
-		else:
-			reply_text+="That was rude! Please give me input"
+	for term in terms:
+		reply_text += term[0] + ":\n" + term[1] + "\n"
 	if(reply_text != ""):
-		reply_text+= "\n\n&nbsp;&nbsp;\n\n^^Bot ^^by ^^Ethan ^^Schaffer. ^^Check ^^out ^^the ^^[GitHub](https://github.com/ethan-schaffer/reddit-bot) ^^or ^^send ^^me ^^a ^^PM!"
+		reply_text+= "&nbsp;&nbsp;\n\n^^Bot ^^by ^^Ethan ^^Schaffer. ^^Check ^^out ^^the ^^[GitHub](https://github.com/ethan-schaffer/reddit-bot) ^^or ^^send ^^me ^^a ^^PM!"
 		print("Going to comment:")
 		print(reply_text)
+		if(len(terms) < 5 and len(reply_text.split("\n") < 10)):
 			## comment.reply("Here's what I found: \n" + reply_text)
-		## Uncomment the above to check the time left
-		try :
-			comment.reply("Here's what I found: \n" + reply_text)
-		except:
-			print("Failed to post, posting too often")
-			print("Sleeping for 30 seconds, then will try again")
-			time.sleep(30)
-			return
+			## Uncomment the above to check the time left
+			try :
+				comment.reply("Here's what I found: \n" + reply_text)
+			except:
+				print("Failed to post, posting too often")
+				print("Sleeping for 30 seconds, then will try again")
+				time.sleep(30)
+				return False
+		else:
+			#Use PasteBin
+			print("Comment too long! Using PasteBin API")
 		print("Replied to comment " + comment.id)
 		comments_replied_to.append(comment.id)
 		with open ("comments_replied_to.txt", "a") as f:
 			f.write(comment.id + "\n")
-		return
-def run_bot(r, comments_replied_to, rulesList, count, sub):
-	how_many = 50
+		return True
+	return False
+def run_bot(bot, comments_replied_to, rules_list, awards_list, how_many):
 	print("Obtaining " + str(how_many) + " comments from reddit.com/r/ftc...")
 	start_time = time.time()
-	for comment in r.subreddit('ftc').comments(limit=how_many):
-		handle_comment(comment, rulesList)
-	print("Getting comments from reddit.com/r/ftc took " + str(time.time()-start_time) + " seconds")
+	for comment in bot.subreddit('ftc').comments(limit=how_many):
+		if handle_comment(comment, rules_list, awards_list, comments_replied_to):
+			comments_replied_to.append(comment.id)
+	print("r/ftc took " + str(time.time()-start_time) + " seconds")
 	start_time = time.time()
 	print("Obtaining " + str(how_many) + " comments from reddit.com/r/testingground4bots...")
-	for comment in r.subreddit('testingground4bots').comments(limit=how_many):
-		handle_comment(comment, rulesList)
-	print("Getting comments from reddit.com/r/testingground4bots took " + str(time.time()-start_time) + " seconds")
+	for comment in bot.subreddit('testingground4bots').comments(limit=how_many):
+		if handle_comment(comment, rules_list, awards_list, comments_replied_to):
+			comments_replied_to.append(comment.id)
+	print("r/testingground4bots took " + str(time.time()-start_time) + " seconds")
 	time.sleep(10)
-	return 0
+	return comments_replied_to
+
+def get_rules_list(rules_list, query_list):
+	good_rules = []
+	for rule in rules_list:
+		is_good = 0
+		is_bad = 0
+		for query in query_list:
+			if (query not in rule[1].lower()) and (query != rule[0].lower()):
+				is_bad+=1
+			else:
+				is_good+=1
+		percent = ( is_good / (is_good+is_bad) )
+		if percent >= .75:
+			good_rules.append(rule)
+	return good_rules
 
 def get_saved_comments():
 	if not os.path.isfile("comments_replied_to.txt"):
@@ -816,19 +790,9 @@ def get_saved_comments():
 		comments_replied_to = f.read()
 		comments_replied_to = comments_replied_to.split("\n")
 	return comments_replied_to
-reload(sys)
-sys.setdefaultencoding('utf8')
-rules = [] #an array of tuples of the format ( (rule name, rule num), rule text)
-terms = ["t", "re", "rm", "rg"]
-vals = [27, 17, 7, 8]
-for rulesetKey in range(4):
-	for num in range(vals[rulesetKey]):
-		keyValue = (terms[rulesetKey],num)
-		ruleText = getRule(keyValue[0],num)
-		rules.append((keyValue,ruleText))
-
-r = bot_login()
+#reload(sys)
+#sys.setdefaultencoding('utf8')
 comments_replied_to = get_saved_comments()
+bot = bot_login()
 while True:
-	count = run_bot(r, comments_replied_to, rules, count, 'ftc')
-	count = run_bot(r, comments_replied_to, rules, count, 'testingground4bots')
+	comments_replied_to = run_bot(bot, comments_replied_to, rules, awards, 50)
