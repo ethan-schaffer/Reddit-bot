@@ -1,5 +1,5 @@
-#skeleton from busterroni (c) February 20, 2017 
-#Video at: https://www.youtube.com/watch?v=A6rTvlgLUWk
+# skeleton from busterroni (c) February 20, 2017
+# Video at: https://www.youtube.com/watch?v=A6rTvlgLUWk
 
 import praw
 import config
@@ -7,9 +7,10 @@ import time
 import os
 import re
 import sys
+
 rules = []
 awards = []
-awards.append( ("inspire","""
+awards.append(("inspire", """
 This judged award is given to the Team that embodied the ‘challenge’ of the FIRST Tech Challenge program.
 The Team that receives this award is a strong ambassador for FIRST programs and a role model FIRST Team.
 This Team is a top contender for many other judged awards and is a gracious competitor.
@@ -27,8 +28,8 @@ Required criteria for the Inspire Award:
 - Robot design is creative and innovative, and the Robot performs reliably on the field.
 Team communicates clearly about their Robot design and strategy to the judges.
 - Team presentation is professional and engaging.
-""") )
-awards.append( ("Think","""
+"""))
+awards.append(("Think", """
 **Removing engineering obstacles through creative thinking.**
 This judged award is given to the Team that best reflects the journey the Team took as they experienced the engineering design process during the build season.
 The Engineering section of the notebook is the key reference for judges to help identify the most deserving Team.
@@ -46,8 +47,8 @@ Note: Teams should review the Engineering Notebook resources published in the Te
 
 Strongly suggested criteria for the Think Award:
 - Teams should tab or flag 6 to 8 pages of the Engineering section to support entries on the summary page.
-""") )
-awards.append( ("connect","""
+"""))
+awards.append(("connect", """
 **Connecting the dots between community, FIRST, and the diversity of the engineering world.**
 This judged award is given to the Team that most connects with their local science, technology, engineering and math (STEM) community.
 A true FIRST Team is more than a sum of its parts, and recognizes that engaging their local STEM community plays an essential part in their success.
@@ -61,8 +62,8 @@ Required criteria for the Connect Award:
 - The plan could include fund-raising goals, sustainability goals, timelines, outreach, and community service goals.
 - Team provides clear examples of developing in person or virtual connections with individuals in the engineering, science, or technology community.
 - Team actively engages with the engineering community to help them understand FIRST, the FIRST Tech Challenge, and the Team itself.
-""") )
-awards.append( ("innovate","""
+"""))
+awards.append(("innovate", """
 **Bringing great ideas from concept to reality.**
 
 The Rockwell Collins Innovate Award celebrates a Team that thinks outside the box, and has the ingenuity and inventiveness to make their designs come to life.
@@ -80,8 +81,8 @@ Required criteria for the Rockwell Collins Innovate Award:
 - Robot or Robot sub-assembly must be elegant and unique in its design.
 - Creative component must be stable, robust, and work reliably.
 - Robot design is efficient and consistent with Team plan and strategy.
-""") )
-awards.append( ("design","""
+"""))
+awards.append(("design", """
 **Industrial design at its best.**
 
 This judged award recognizes design elements of the Robot that are both functional and aesthetic.
@@ -99,8 +100,8 @@ Required criteria for the PTC Design Award:
 - Robot distinguishes itself from others by its aesthetic and functional design.
 - Basis for the design is well considered (that is inspiration, function, etc.).
 - Use of PTC’s Creo is not required to be eligible; however, Teams that use them in their design are given extra consideration for this award.
-""") )
-awards.append( ("motivate","""
+"""))
+awards.append(("motivate", """
 **Sparking others to embrace the culture of FIRST!**
 
 This Team embraces the culture of FIRST and clearly shows what it means to be a Team.
@@ -117,8 +118,8 @@ Required criteria for the Motivate Award:
 Strongly suggested criteria for the Motivate Award:
 - All Team members take part in their presentation, and actively engage with the judges.
 - Team shows a creative approach to materials that market their Team and FIRST.
-""") )
-awards.append( ("control","""
+"""))
+awards.append(("control", """
 **Mastering Robot intelligence.**
 
 The Control Award celebrates a Team that uses sensors and software to increase the Robot’s functionality on the field.
@@ -151,8 +152,8 @@ The Judges should pay attention to look for:
 - What algorithm or code the Team has programmed  with; what worked, what didn’t, and why.
 - The Judges should pay attention to the program and design process. The design process is more critical than the code itself.
 - Just like having Engineering Notebook reviewers, the Judge Advisor will assign a group of 2-3 Judges to review the Control Award Content Sheets, once Interviews are complete.
-""") )
-awards.append( ("promote","""
+"""))
+awards.append(("promote", """
 **This judged award is optional and may not be given at all Tournaments.**
 Your Judge Advisor will have information about the Judging for this Award.
 The Promote Award is given to the Team that is most successful in creating a compelling video message for the public designed to change our culture and celebrate science, technology, engineering and math.
@@ -174,8 +175,8 @@ Required criteria for the Promote Award:
 	- Team must present a thoughtful and impactful video which appeals to the public.
 	- Creativity in interpreting the yearly theme is required.
 	- Follow video award submission guidelines.
-""") )
-awards.append( ("compass","""
+"""))
+awards.append(("compass", """
 **A beacon and leader in the journey of the FIRST Tech Challenge.**
 
 This judged award is optional and may not be given at all tournaments.
@@ -194,17 +195,17 @@ Required criteria for the Compass Award:
 		- Video must be submitted by the deadline given by the Event Organizer.
 	- Video highlights the mentor’s contribution to the Team and demonstrates what sets the mentor apart.
 	- Follow video award submission guidelines.
-""") )
-awards.append( ("judges","""
+"""))
+awards.append(("judges", """
 This award is optional and may not be given at all tournaments.
 Your Judge Advisor will have information about the Judging for this Award.
 During the competition, the judging panel may meet a Team whose unique efforts, performance or dynamics merit recognition, but doesn’t fit into any of the existing award categories.
 To recognize these unique Teams, FIRST offers a customizable Judges Award.
 The judging panel may select a Team to be honored, as well as the name of the Judges’ Award.
 The Judges Award recognizes a Team for their outstanding efforts, but does not factor into the Advancement Criteria.
-""") )
+"""))
 
-rules.append( ("RE1","""
+rules.append(("RE1", """
 Main Power Switch - The Robot Main Power Switch must control all power provided by the Robot main battery pack. FIRST requires Teams to use either the TETRIX (part # W39129), MATRIX (part # 500030), or REV (REV-31-1387) power switch.
 
 This is the safest method for Teams and Field personnel to shut down a Robot.
@@ -218,11 +219,11 @@ Attach the image (“POWER BUTTON”) to your Robot near the Main Power Switch.
 To be easily seen by field personnel the label should be at least 1 in x 2.63 in (2.54 cm x 6.68 cm, Avery Label # 5160) and placed on a flat surface (not wrapped around corners or cylinders).
 
 The Robot Main Power Switch should be mounted on the Robot so it is protected from Robot-to-Robot contact to avoid inadvertent actuation or damage.
-""") )
-rules.append( ("RE2","""
+"""))
+rules.append(("RE2", """
 Battery Mount - Batteries MUST be securely (for example, VELCRO, zip tie, rubber band) attached to the Robot in a location where they will not make direct contact with other Robots or the Playing Field.
-""") )
-rules.append( ("RE3","""
+"""))
+rules.append(("RE3", """
 Robot Main Battery – All Robot power is provided by a single 12 V Robot main battery.
 
 The only allowed Robot main power battery packs are:
@@ -237,15 +238,15 @@ The only allowed Robot main power battery packs are:
 		pack, or REV Robotics (REV-31-1302) 12 VDC Slim Battery pack if TETRIX, AndyMark, REV
 		Robotics, or MATRIX 12 VDC Motors are used
 	Note: There are similar looking batteries available from multiple sources but the ONLY legal batteries are those listed above.
-""") )
-rules.append( ("RE4","""
+"""))
+rules.append(("RE4", """
 Fuses - Where present, fuses must not be replaced with fuses of higher rating than originally installed or according to manufacturer's specifications; fuses may not be shorted out.
 
 Fuses must not exceed the rating of those closer to the battery; if necessary, a fuse may be replaced with a smaller rating.
 
 Fuses must be single use only, self-resetting fuses (breakers) are not allowed.
-""") )
-rules.append( ("RE5","""
+"""))
+rules.append(("RE5", """
 Robot Power - Robot power is constrained by the following:
 	a. Allowed electronic devices may only be powered by power ports on the Core Power Distribution Module or the REV Expansion Hub except as follows:
 		i. The Core Power Distribution Module or REV Expansion Hub is powered by the Robot main battery. If a hybrid of Modern Robotics modules is used with the REV Expansion Hub, the REV Expansion Hub must be powered from a power port on the Core Power Distribution Module.
@@ -254,8 +255,8 @@ Robot Power - Robot power is constrained by the following:
 		iv. Video cameras per <RE13>.
 	b. The Robot Controller Android device must be powered by its own internal battery or by the built-in charging feature of the REV Expansion Hub; external power is not allowed.
 	c. A second REV Expansion Hub is allowed to be connected to and powered by the extra XT30 powerport on a Robot’s first REV Expansion Hub. No other devices are allowed to draw power from the XT30 power ports on a REV Expansion Hub.
-""") )
-rules.append( ("RE6","""
+"""))
+rules.append(("RE6", """
 Android Devices - The following Android devices are allowed:
 - ZTE Speed
 - Motorola Moto G 2nd Generation
@@ -267,8 +268,8 @@ Android Devices - The following Android devices are allowed:
 	b. Exactly one (1) Android device must be used as a part of the Driver Station.
 	c. The Robot Controller Android device must be powered by its own internal battery or by the built-in charging feature of the REV Expansion Hub; external power is not allowed.
 	d. The Driver Station Android device must be powered by its own internal battery; external power is allowed from a COTS USB external battery pack that is connected to the allowed USB hub.
-""") )
-rules.append( ("RE7","""
+"""))
+rules.append(("RE7", """
 Control Module Quantities - Robot control module quantities are constrained as follows:
 	a. Exactly one (1) Core Power Distribution Module is required for Teams using any Modern Robotics Core Control Modules or Legacy MATRIX DC Motor/Servo Controllers.
 	b. No more than two (2) Core Device Interface Modules are allowed.
@@ -278,13 +279,13 @@ Control Module Quantities - Robot control module quantities are constrained as f
 	f. No more than two (2) REV Expansion Hubs are allowed.
 	g. The REV Control Hub is not allowed.
 	h. No more than two (2) Legacy MATRIX DC Motor/Servo Controllers (unified module) are allowed.
-	""") )
-rules.append( ("RE8","""
+	"""))
+rules.append(("RE8", """
 Motor and Servo Controllers - Motor and Servo Controllers are allowed in only one of the following two configurations (cannot mix configurations).
 	a. Core Motor Controllers, Core Servo Controllers, REV Expansion Hub, REV Servo Power Module, Legacy TETRIX DC Motor Controllers, and Legacy TETRIX Servo Controllers in any combination.
 	b. Legacy MATRIX DC Motor/Servo Controllers (unified module).
-""") )
-rules.append( ("RE9","""
+"""))
+rules.append(("RE9", """
 DC Motors – A maximum of eight (8) DC motors are allowed. The only allowed motors are as follows:
 a. Core Motor Controller, REV Expansion Hub, and Legacy TETRIX DC Motor Controller based systems must use the following 12 VDC motors in any combination.
 	i. TETRIX 12V DC Motor
@@ -310,9 +311,8 @@ d. No other DC motors are allowed. The allowed battery, motor controller, and DC
 |REV HD Hex 12V|✓|X|✓|
 |REV Core Hex 12V|✓|X|✓|
 |MATRIX 9.6V|X|✓|X|
-""") )
-
-rules.append( ("RE10","""
+"""))
+rules.append(("RE10", """
 Servos – A maximum of twelve (12) servos are allowed. Any servo that is compatible with the attached servo controller is allowed.
 
 Servos may only be controlled and powered by an allowed Servo Controller, REV Expansion Hub or REV Servo Power Module (when used with an allowed Servo Controller or REV Expansion Hub).
@@ -330,9 +330,8 @@ REV Expansion Hubs must use a REV Servo Power Module between the REV Expansion H
 A maximum of two (2) VEX EDR 393 Motors may be controlled/powered per REV Servo Power Module.
 
 The VEX EDR 393 motor is considered a servo and it is subject to the overall total maximum of twelve (12) servos.
-""") )
-
-rules.append( ("RE11","""
+"""))
+rules.append(("RE11", """
 Sensors - Sensors are subject to the following constraints:
 	a. Compatible sensors from any manufacturer may be connected to the Core Device Interface Module or REV Expansion Hub.
 	b. Compatible sensors from any manufacturer may be connected to the Logic Level Converter and/or the I2C Sensor Adapter Cable. Refer to Rule <RE14.k> for details on the use of Logic Level Converter and the I2C Sensor Adapter Cable.
@@ -344,9 +343,8 @@ Sensors - Sensors are subject to the following constraints:
 	h. Voltage and/or current sensors are also allowed to connect between the battery pack and the REV Expansion Hub or Core Power Distribution Module.
 	i. The HiTechnic Touch Sensor Multiplexor (NTX1060) is allowed.
 	j. The HiTechnic Sensor Multiplexor (NSX2020) is not allowed.
-""") )
-
-rules.append( ("RE12","""
+"""))
+rules.append(("RE12", """
 Light Sources - Light sources (including LEDs) are allowed; these may not be focused or directed in any way (for example: lasers and mirrors are not allowed). Approved power sources for lights are as follows:
 	a. Internal (as supplied by the manufacturer) battery pack or battery holder
 	b. Power ports on the Core Power Distribution Module
@@ -356,13 +354,11 @@ Light Sources - Light sources (including LEDs) are allowed; these may not be foc
 		i. Motor-control port
 		ii. Spare XT30 port
 		iii. 5V auxiliary power port
-""") )
-
-rules.append( ("RE13","""
+"""))
+rules.append(("RE13", """
 Video Cameras - Video recording devices (GoPro or similar) are allowed providing they are used only for non-functional post-match viewing and the wireless capability is turned off. Approved video cameras must be powered by an internal (as supplied by the manufacturer) battery.
-""") )
-
-rules.append( ("RE14","""
+"""))
+rules.append(("RE14", """
 Robot Wiring - Robot wiring is constrained as follows:
 	a. USB Surge Protectors connected to USB cables are allowed.
 	b. Ferrite chokes (beads) on wires and cables are allowed.
@@ -381,9 +377,8 @@ Robot Wiring - Robot wiring is constrained as follows:
 Teams should be prepared during Robot inspection to show documentation confirming the wire gauges used; particularly for multiconductor cables.
 k. Logic Level Converters – Logic Level Converters that are used to connect a REV Expansion Hub to a 5V-compatible I2C sensor or a 5V-compatible digital sensor are allowed. Exactly one Logic Level Converter per I2C device and one Logic Level Converter per digital sensor are allowed. A Logic Level Converter should only draw power from the REV Expansion Hub.
 l. Electrically grounding the electronics to the frame of the Robot is not allowed.
-""") )
-
-rules.append( ("RE15","""
+"""))
+rules.append(("RE15", """
 Modifying Electronics - Approved electrical and electronic devices may be modified to make them more usable; they may not be modified internally or in any way that affects their safety.
 
 Examples of modifications that are allowed:
@@ -397,9 +392,8 @@ Examples of modifications that are not allowed:
 - Rewinding a motor
 - Replacing a fuse with a higher value than specified by the manufacturer
 - Shorting out a fuse
-""") )
-
-rules.append( ("RE16","""
+"""))
+rules.append(("RE16", """
 Driver Station Constraints – Teams provide their own Driver Station and it must comply with the following constraints:
 	a. The Driver’s Station must consist only of:
 		i. One (1) Android device
@@ -415,15 +409,14 @@ Driver Station Constraints – Teams provide their own Driver Station and it mus
 		ii. Xbox 360 Controller for Windows (Part# 52A-00004)
 	e. The touch display screen of the Driver Station must be accessible and visible by competition personnel.
 Important Note: The Driver Station is a wireless device with a built-in wireless radio. During a match, the Driver Station should not be obscured by metal or other material that could block or absorb the radio signals from the Driver Station.
-""") )
-
-rules.append( ("RE17","""
+"""))
+rules.append(("RE17", """
 Additional Electronics – Electronic devices that are not specifically addressed in the preceding Rules are not allowed.
 
 A partial list of electronics that are not allowed includes: Arduino boards, Raspberry Pi, relays, and custom circuits.
-""") )
+"""))
 
-rules.append( ("RM1","""
+rules.append(("RM1", """
 Allowed Materials - Teams may use raw and post-processed materials to build their Robots, provided they are readily available to the majority of Teams from standard distributors (for example, McMasterCarr, Home Depot, Grainger, AndyMark, TETRIX/PITSCO, MATRIX/Modern Robotics, REV Robotics, etc.).
 
 Examples of allowed raw materials are:
@@ -438,9 +431,8 @@ Examples of allowed post-processed materials are:
 	- Cable, string, rope, filament, etc.
 	- Springs of all types: compression, extension, torsion, surgical
 	tubing, etc.
-""") )
-
-rules.append( ("RM2","""
+"""))
+rules.append(("RM2", """
 Commercial Off The Shelf Parts - Teams may use Commercial Off The Shelf (COTS) mechanical parts that have a single degree of freedom.
 
 A single degree of freedom is a system whose motion is defined just by a single independent co-ordinate (or function).
@@ -458,23 +450,23 @@ Examples of allowed single degree of freedom parts:
 Examples of illegal multiple degrees of freedom parts:
 	- Gripper assemblies or kits
 	- Ratcheting wrenches
-""") )
-rules.append( ("RM3","""
+"""))
+rules.append(("RM3", """
 Holonomic Wheels - Holonomic wheels (omni or mechanum) are allowed.
-""") )
-rules.append( ("RM4","""
+"""))
+rules.append(("RM4", """
 3D Printed Parts - 3D printed parts are allowed.
-""") )
-rules.append( ("RM5","""
+"""))
+rules.append(("RM5", """
 Modifying Materials and COTS Parts - Allowed materials and legal COTS parts may be modified (that is, drilled, cut, painted, etc.), as long as no other rules are violated.
-""") )
-rules.append( ("RM6","""
+"""))
+rules.append(("RM6", """
 Allowed Assembly Methods - Welding, brazing, soldering, and fasteners of any type are legal methods for assembling a Robot.
-""") )
-rules.append( ("RM7","""
+"""))
+rules.append(("RM7", """
 Lubricant - Any type of COTS lubricant is allowed, if it doesn’t contaminate the Playing Field, game elements, other Robots, etc.
-""") )
-rules.append( ("RG1","""
+"""))
+rules.append(("RG1", """
 Illegal Parts - The following types of mechanisms and parts are not allowed:
 	a. Those that could potentially damage the Playing Field and/or Scoring Elements. For example, high traction wheels (for example, AM- 2256) and high grip tread (for example, Rough top) when used in a Robot drive system that may damage the Playing Field are not allowed.
 		For example: Black tire marks on an Element is not considered Playing Field damage. However, digging a hole into the Playing Field tiles can be considered damage.
@@ -488,8 +480,8 @@ Illegal Parts - The following types of mechanisms and parts are not allowed:
 	i. Those that are designed to electrically ground the Robot frame to the Playing Field.
 	j. Closed gas devices (for example, gas storage vessel, gas spring, compressors, etc.).
 	k. Hydraulic devices.
-""") )
-rules.append( ("RG2","""
+"""))
+rules.append(("RG2", """
 Maximum Starting Size - The maximum size of the Robot for starting a match is 18 inches (45.72 cm) wide by 18 inches (45.72 cm) long by 18 inches (45.72 cm) high.
 
 The Robot Sizing Box will be used as the official gauge to make sure Robots comply with this Rule.
@@ -503,9 +495,8 @@ The Alliance flag and preloaded game elements may extend outside the starting vo
 The Robot must be self-supporting while in the Robot Sizing Box by either:
 	a. A mechanical means with the Robot in a power-OFF condition. Any restraints used to maintain starting size (that is, zip ties, rubber bands, string, etc.) MUST remain attached to the Robot for the entire match.
 	b. A Robot Initialization Routine in the Autonomous operational mode (op mode) program that may preposition the servo motors, with the Robot in a power-ON condition, to the desired stationary position. If the Robot Initialization Routine does move the servos when a program is executed, there must be an indicator on the Robot of this fact. A warning label placed near the Robot’s main power switch is required. Attach the image (“WARNING! - Robot moves on Initialization”) to your Robot near the Robot main power switch if servos are commanded to move during the initialization routine. To be easily seen by field personnel the label should be at least 1 in x 2.63 in (2.54 cm x 6.68 cm, Avery Label # 5160) and placed on a flat surface (not wrapped around corners or cylinders).
-""") )
-
-rules.append( ("RG3","""
+"""))
+rules.append(("RG3", """
 Robot Controller Mount – It is recommended the Robot Controller be accessible and visible by competition personnel. If a Team’s Robot Controller is not accessible and/or visible to competition personnel, the Team may not receive adequate support from the field personnel.
 
 The Robot Controller should be mounted such the display screen is protected from contact with the Playing Field elements and other Robots.
@@ -515,8 +506,8 @@ This and other electrical parts (batteries, motor and servo controllers, switche
 Important Note: The Robot Controller contains a built-in wireless radio that communicates with the Android device in the Driver Station.
 
 In addition to protecting the device from impact, the Robot Controller should not be obscured by metal or other material that could block or absorb the radio signals from the Robot Controller.
-""") )
-rules.append( ("RG4","""
+"""))
+rules.append(("RG4", """
 Alliance Flag Holder - Robots MUST include a mounting device to securely hold one Tournament supplied FIRST Tech Challenge Robot Alliance Identification Flag throughout an entire match.
 
 The flag MUST be mounted at the TOP of the Robot and be clearly visible throughout the match to clearly identify a Robot’s Alliance.
@@ -526,8 +517,8 @@ Flag posts are typically a soda straw or wooden dowel.
 Dimensions of each are close to 0.25 inches (0.635 cm) outer diameter x 0.20 inches (0.5 cm) inner diameter x 8.25 inches (21 cm) length with a triangular flag 4.0 inches (10.16 cm) high x 6.0 inches (15.24 cm) wide.
 
 These may vary from Event to Event; Alliance Flag Holders should be able to securely hold both solid core dowels and open core straws. Mounting devices that damage the flag post are not acceptable.
-""") )
-rules.append( ("RG5","""
+"""))
+rules.append(("RG5", """
 Team Number Display - Robots MUST prominently display their Team number (numerals only, for example “12345”) on two separate signs.
 	a. The judges, referees, and announcers must be able to easily identify Robots by Team number.
 	b. Team number must be visible from at least two opposite sides of the Robot (180 degrees apart).
@@ -537,17 +528,17 @@ Team Number Display - Robots MUST prominently display their Team number (numeral
 	d. Team numbers must be robust enough to withstand the rigors of match play. Example robust materials
 	include: 1) self-adhesive numbers (that is, mailbox or vinyl numbers) mounted on polycarbonate sheet,
 	wood panel, metal plate, etc.; 2) Ink jet or laser printed numbers on paper and laminated.
-""") )
-rules.append( ("RG6","""
+"""))
+rules.append(("RG6", """
 Allowed Energy Sources - Energy used by FIRST Tech Challenge Robots, (that is, stored at the start of a match), shall come only from the following sources:
 	a. Electrical energy drawn from approved batteries.
 	b. A change in the position of the Robot center of gravity.
 	c. Storage achieved by deformation of Robot parts. Teams must be careful when incorporating spring-like mechanisms or other items to store energy on their Robot by means of part or material deformation.
-""") )
-rules.append( ("RG7","""
+"""))
+rules.append(("RG7", """
 Launching Robot Parts - Parts of the Robot itself may not be launched, even if the part launched is still connected to the Robot by a tether (for example, wire, rope, or cable).
-""") )
-rules.append( ("RG8","""
+"""))
+rules.append(("RG8", """
 Launching Game Scoring Elements – Robots are allowed to launch game Scoring Elements through the air unless limited by a game specific Rule.
 
 It is expected that Teams will launch the elements with just enough velocity to score.
@@ -555,22 +546,23 @@ It is expected that Teams will launch the elements with just enough velocity to 
 If the referees, feel that a Robot is launching Scoring Elements with excessive velocity that would cause a safety issue if they were to leave the field, the Robot will be required to be inspected.
 
 Robots must then demonstrate that a launched Game Element cannot travel in the air more than a distance of 16 ft. (4.88 m) or more than 6 ft. (1.83 m) in elevation.
-""") )
-rules.append( ("T1","""
+"""))
+
+rules.append(("T1", """
 Egregious behavior by any Team, Team member, or other representative of the Team is not tolerated at a FIRST Tech Challenge Tournament.
 
 Violations of this Rule can result in penalties to the Team, and/or the issuance of a Yellow or Red Card.
 
 Egregious behavior includes, but is not limited to, repeated and/or flagrant violation of gameRules, unsafe behavior or actions, uncivil behavior towards Volunteers, Competition personnel, or Event attendees.
-""") )
-rules.append( ("T2","""
+"""))
+rules.append(("T2", """
 Yellow Cards and Red Cards are used in the FIRST Tech Challenge to manage Team and Robot behavior that does not align with the mission of FIRST. 
 
 Yellow and Red Cards are not limited to just the Competition Area. 
 
 Teams that display egregious behavior in the Pit Area, Judging Rooms, stands, or any other location of the Event can be issued a Yellow or Red Card for egregious behavior. Egregious or repeated (3 or more) Robot or Team member behavior at the Event can result in a Yellow and/or Red Card. The Head Referee may assign a Yellow Card as a warning, or a Red Card for Disqualification in a match. A Yellow Card or Red Card is signaled by the Head Referee standing in front of the Team’s Alliance Station and holding a Yellow Card and/or Red Card in the air. Yellow Cards are additive, meaning that a second Yellow Card is automatically converted to a Red Card. A Team is issued a Red Card for any subsequent incident in which they receive an additional Yellow Card, including earning a second Yellow Card during a single match. To issue the second yellow card, the Head Referee will stand in front of the Team’s Alliance Station and hold a Yellow Card and Red Card. The Head Referee will signal the second Yellow Card after the match has ended. A Team that has received either a Yellow Card or a Red Card carries a Yellow Card into following matches, except as noted below. A Red Card results in match Disqualification. Multiple Red Cards may lead to Tournament Disqualification. Once a Team receives a Yellow Card or Red Card, the Team number is presented with a yellow background on the audience screen at the beginning of all following matches. This is a reminder to the Team, referees, and audience the Team carries a Yellow Card. Yellow Cards do not carry over from the Qualification Matches to the Elimination Matches. During the Elimination Matches, Yellow and Red Cards count against the entire Alliance, not to a specific Team. If a Team receives a Yellow Card or Red Card, it results in the entire Alliance receiving the Yellow Card or Red Card for that match. If two different Teams on the same Alliance are issued Yellow Cards, the entire Alliance is issued a Red Card. A Red Card results in zero (0) points for that match, and the Alliance loses the match. If both Alliances receive Red Cards, the Alliance which committed the action earning the Red Card first chronologically loses the match.
-""") )
-rules.append( ("T3","""
+"""))
+rules.append(("T3", """
 Referees have final game play and scoring authority during the Competition.
 Their rulings are final.
 	a. The referees will not review any recorded match replays or photographs.
@@ -579,8 +571,8 @@ Their rulings are final.
 		ii. Elimination Matches and Final Matches: A Team must enter the Referee Question Box to dispute a match before the start of the next match played by the Alliance, regardless if the Team is playing in the next match. The next match played could involve different Alliances. Questions about the last match of the Finals must be brought to the question box no later than 5 minutes after the announcement of the score of the match.
 	Students must support their questions by referencing specificRules or posts to the Q&A section of the official FIRST Tech Challenge Forum. Team members must ask their questions in a gracious and respectful manner.
 	c. Team members cannot enter the Playing Field for any reason other than to place or retrieve their Robots. Inspection of the Playing Field elements by Team members to determin e scoring is not allowed . Individuals and Teams that violate this Rule will be subject to possible Team penalties that could include m atch disqualifications or even removal from the Tournament.
-""") )
-rules.append( ("T4","""
+"""))
+rules.append(("T4", """
 No Team , Team Member, or Event attendee is allowed to set up their own Wi-Fi 802.11 (2.4GHz or 5GHz) wireless communication in the v enue.
 
 Non-allowed wireless communications include, but are not limited to:
@@ -605,8 +597,8 @@ After the Field Technical Advisor is alerted of a potential Rule violation, he o
 The Field Technical Advisor and Head Referee will further explore the potential violation of this Rule.
 
 The Head Referee will work with FIRST Headquarters staff to determine if Rule <T4> has be en violated, and to disqualify the offending Team.
-""") )
-rules.append( ("T5","""
+"""))
+rules.append(("T5", """
 Wi-Fi Direct® connectivity between the Android devices used as the Robot Controller and the Drivers Station is allowed.
 
 No other wireless communication is allowed.
@@ -616,24 +608,24 @@ The Penalty for violating Rule <T5> is disqualification of the entire Team from 
 The Head Referee will work with FIRST Headquarters staff to determine if Rule <T5> has been violated, and to disqualify the offending Team.
 
 Teams may not appeal the penalty and no refunds will be given for registration fees, prepaid meals, etc. FIRST may conduct a post-Event review and determine if any additional penalties are to be imposed on the offending Team.
-""") )
-rules.append( ("T6","""
+"""))
+rules.append(("T6", """
 Team members may be asked by the Event Director to use a specific Wi-Fi channel on the Event day.
 
 Teams must comply with the request of the Event Director if asked to use a specific Wi-Fi Channel when supported by an approved Android Device.
 
 Teams that have Android Devices that support channel changing MUST comply with the request of the Event Director to switch their channel before playing in the next match.
-""") )
-rules.append( ("T7","""
+"""))
+rules.append(("T7", """
 Each registered Team may enter only one Robot (a Robot built to play the current season’s game challenge ) into the FIRST Tech Challenge Competition. It is expected that Teams will make changes to their Robot throughout the season and at competitions.
 	a. It is against this Rule to compete with one Robot while a second is being adjusted or assembled at a Tournament.
 	b. It is against this Rule to switch back and forth between multiple Robots at a Tournament.
 	c. It is against this Rule to register and attend concurrent Events with a second Robot. Violations of this Rule will immediately be considered egregious and a deliberate violation of the Rule.
-	""") )
-rules.append( ("T8","""
+	"""))
+rules.append(("T8", """
 Only three Team representatives are allowed in the Competition Area; two (2) student drivers, and one (1) coach who are identified by badges labeled ‘driver’ or ‘coach.’ These badges are interchangeable within a Team between matches. Only student Team members wearing a badge labeled as ‘driver’ may drive the Robot during the match. Team representatives beyond the two student drivers and one coach will be asked to leave the Competition Area immediately.
-""") )
-rules.append( ("T9","""
+"""))
+rules.append(("T9", """
 Pre-Match Robot Setup – At the beginning of a match , each Alliance Robot must be set up on the Playing Field in accordance with section 1.5.1 Pre-Match in the Game Manual Part 2. After Robots have been set up on the Playing Field, Drive Teams are required to stand Completely Inside the Alliance Station at the location (Station one or Station two) specified by the Qualification Match schedule.
 	a During the Qualification Matches, the Blue Alliance Robots are set up on the Playing Field first , unless the Red Alliance waives their right to set up on the Playing Field second.
 	b. During the Elimination Matches, the 3rd and 4th seeded) Alliance Robots are set up on the Playing Field first, unless the higher seeded Alliance waives their right to set up on the Playing Field second. Alliance color doesn’t change the seed ing of a Team during the Elimination Matches. If the 4th seed defeats the 1st seed in the Semi-Finals, they will still have to place their Robot on the field first in the Finals because their seeding will be lower than the 2nd or 3rd seed.
@@ -642,25 +634,25 @@ Pre-Match Robot Setup – At the beginning of a match , each Alliance Robot must
 Drive Teams are expected to stage their Robots for a match, and remove it from the Playing Field afterwards, safely and swiftly. Drive Team efforts that either intentionally or unintentionally delay the start of a match or the Field reset are not allowed. Examples include, but are not limited to:
 	- Late arrival to the Playing Field.
 	- Robot maintenance once on the Playing Field
-""") )
-rules.append( ("T10","""
+"""))
+rules.append(("T10", """
 Scores are recorded at the end of the Autonomous Period and Driver - Controlled Period when all objects on the Playing Field have come to rest.
 
 Scores may not be announced to the Teams until some amount of time after the Match has completed.
-""") )
-rules.append( ("T11","""
+"""))
+rules.append(("T11", """
 There are no time-outs during the Qualification Matches.
-""") )
-rules.append( ("T12","""
+"""))
+rules.append(("T12", """
 If no member of the Drive Team is present in the Driver Station at the start of a match , that Team is declared a “no show”. If a Robot cannot report for a match, at least one member of the Drive Team should report to the Playing Field for the m atch.
-""") )
-rules.append( ("T13","""
+"""))
+rules.append(("T13", """
 Teams will receive a minimum of five minutes (5:00) be tween consecutive matches.
-""") )
-rules.append( ("T14","""
+"""))
+rules.append(("T14", """
 During the elimination rounds, each Alliance will be allotted ONE time - out of no more than three minutes (3:00). Time-outs must be called at least two minutes (2:00) before their next m atch ’s starting time. The time-out begins at the time their match was going to start.
-""") )
-rules.append( ("T15","""
+"""))
+rules.append(("T15", """
 All Team members, coaches, and their guests must wear ANSI Z 87.1 certified safety glasses while in the Pit or Competition Area. 
 
 Prescription glasses with ANSI Z 87.1 approved commercial off the shelf side shields are also allowed.
@@ -670,129 +662,137 @@ NOTE: FIRST requires all Teams to bring and supply ANSI - approved safety glasse
 Tinted lenses are allowed as long as Event personnel can see the Volunteer’s, spectator’s, or Team member’s eyes through the safety glasses. 
 
 Sunglasses or deeply shaded safety glasses used in our indoor Event environment are not acceptable.
-""") )
-rules.append( ("T16","""
+"""))
+rules.append(("T16", """
 Skateboards, roller skates, ‘hover boards’, and drones are not allowed at any Tournament. These items can create safety hazards to the Teams, spectators, or Volunteers attending the Event.
-""") )
-rules.append( ("T17","""
+"""))
+rules.append(("T17", """
 No live bands are allowed in the audience or Pit. No loud music, audio systems, whistles, banging sticks, blow horns, etc. are allowed. They prevent Teams from hearing important announcements. Power may be shut off and/or noisemakers confiscated.
-""") )
-rules.append( ("T18","""
+"""))
+rules.append(("T18", """
 Batteries must be charged in an open, well - ventilated area. Drive Teams are expected to stage their Robots for a match , and remove it from the Playing Field afterwards, safely and swift ly. Drive Team efforts that either intentionally or unintentionally delay the start of a match or the Field reset are not allowed. Examples include, but are not limited to: Late arrival to the Playing Field. Robot maintenance once on the Playing Field.
-""") )
-rules.append( ("T19","""
+"""))
+rules.append(("T19", """
 Painting or applying harmful products, sprays, or aerosols are not allowed anywhere in the Tournament. This includes the Pit, Competition, and spectator areas. Note: Teams may apply antistatic spray to their Robot if done outside the venue.
-""") )
-rules.append( ("T20","""
+"""))
+rules.append(("T20", """
 Pit displays may not exceed 10 ft. (3.05 m) x 10 ft. ( 3.05 m) x 10 ft. ( 3.05 m) or a limit specified by the venue, whichever is shorter.
-""") )
-rules.append( ("T21","""
+"""))
+rules.append(("T21", """
 Teams are not allowed to use radios and walkie-talkies anywhere in the venue.
-""") )
-rules.append( ("T22","""
+"""))
+rules.append(("T22", """
 There is no running anywhere during the Event as this is a safety hazard.
-""") )
-rules.append( ("T23","""
+"""))
+rules.append(("T23", """
 Sitting together in a group during Competition matches makes the game more exciting and fun. It allows Team members to show support for their Team. Teams are not allowed to save seating space as there is often not enough seating to hold everyone. Repeated offenses could be considered egregious, and Teams could face consequences for violating this Rule.
-""") )
-rules.append( ("T24","""
+"""))
+rules.append(("T24", """
 Soldering, gluing, brazing, or large power tools are not allowed in the Pit or Competitions Areas unless the Event Director specifically allows them.
-""") )
-rules.append( ("T25","""
+"""))
+rules.append(("T25", """
 Because of siteRules or contracts, FIRST cannot allow Teams or individuals to sell items, such as T-shirts, pins, etc., at any Events. Fundraising for a cause is allowed with consent of the Tournament Director; fundraising for a Team is not allowed.
-""") )
-rules.append( ("T26","""
+"""))
+rules.append(("T26", """
 Check with the Tournament Director before bringing food to an Event, as some venues will not allow outside food on-site because of contracts and agreements.
-""") )
-rules.append( ("T27","""
+"""))
+rules.append(("T27", """
 Open-toed or open-backed shoes are not allowed in the Pit Area or in the Competition Area.
-""") )
+"""))
+
 
 def bot_login():
-	print("Loggin in...")
-	r = praw.Reddit(username = config.username,
-			password = config.password,
-			client_id = config.client_id,
-			client_secret = config.client_secret,
-			user_agent = "FTC Rules Bot")
-	return r
+    print("Logging in...")
+    r = praw.Reddit(username=config.username,
+                    password=config.password,
+                    client_id=config.client_id,
+                    client_secret=config.client_secret,
+                    user_agent="FTC Rules Bot")
+    return r
+
 
 def handle_comment(comment, rules_list, awards_list, comments_replied_to):
-	words = comment.body.lower().split(" ")
-	terms = []
-	if (words[0].lower() == "!award") and comment.id not in comments_replied_to and comment.author != r.user.me():
-		terms = get_rules_list(awards_list, words[1:])
-	elif (words[0].lower() == "!rule") and comment.id not in comments_replied_to and comment.author != r.user.me():
-		terms = get_rules_list(rules_list, words[1:])
-	else:
-		return False
-	reply_text = ""
-	for term in terms:
-		reply_text += term[0] + ":\n" + term[1] + "\n"
-	if(reply_text != ""):
-		reply_text+= "&nbsp;&nbsp;\n\n^^Bot ^^by ^^Ethan ^^Schaffer. ^^Check ^^out ^^the ^^[GitHub](https://github.com/ethan-schaffer/reddit-bot) ^^or ^^send ^^me ^^a ^^PM!"
-		print("Going to comment:")
-		print(reply_text)
-		if(len(terms) < 5 and len(reply_text.split("\n") < 10)):
-			## comment.reply("Here's what I found: \n" + reply_text)
-			## Uncomment the above to check the time left
-			try :
-				comment.reply("Here's what I found: \n" + reply_text)
-			except:
-				print("Failed to post, posting too often")
-				print("Sleeping for 30 seconds, then will try again")
-				time.sleep(30)
-				return False
-		else:
-			#Use PasteBin
-			print("Comment too long! Using PasteBin API")
-		print("Replied to comment " + comment.id)
-		comments_replied_to.append(comment.id)
-		with open ("comments_replied_to.txt", "a") as f:
-			f.write(comment.id + "\n")
-		return True
-	return False
+    words = comment.body.lower().split(" ")
+    terms = []
+    if (words[0].lower() == "!award") and comment.id not in comments_replied_to and comment.author != r.user.me():
+        terms = get_rules_list(awards_list, words[1:])
+    elif (words[0].lower() == "!rule") and comment.id not in comments_replied_to and comment.author != r.user.me():
+        terms = get_rules_list(rules_list, words[1:])
+    else:
+        return False
+    reply_text = ""
+    for term in terms:
+        reply_text += term[0] + ":\n" + term[1] + "\n"
+    if (reply_text != ""):
+        reply_text += "&nbsp;&nbsp;\n\n^^Bot ^^by ^^Ethan ^^Schaffer. ^^Check ^^out ^^the ^^[GitHub](https://github.com/ethan-schaffer/reddit-bot) ^^or ^^send ^^me ^^a ^^PM!"
+        print("Going to comment:")
+        print(reply_text)
+        if (len(terms) < 5 and len(reply_text.split("\n") < 10)):
+            ## comment.reply("Here's what I found: \n" + reply_text)
+            ## Uncomment the above to check the time left
+            try:
+                comment.reply("Here's what I found: \n" + reply_text)
+            except:
+                print("Failed to post, posting too often")
+                print("Sleeping for 30 seconds, then will try again")
+                time.sleep(30)
+                return False
+        else:
+            # Use PasteBin
+            print("Comment too long! Using PasteBin API")
+        print("Replied to comment " + comment.id)
+        comments_replied_to.append(comment.id)
+        with open("comments_replied_to.txt", "a") as f:
+            f.write(comment.id + "\n")
+        return True
+    return False
+
+
 def run_bot(bot, comments_replied_to, rules_list, awards_list, how_many):
-	print("Obtaining " + str(how_many) + " comments from reddit.com/r/ftc...")
-	start_time = time.time()
-	for comment in bot.subreddit('ftc').comments(limit=how_many):
-		if handle_comment(comment, rules_list, awards_list, comments_replied_to):
-			comments_replied_to.append(comment.id)
-	print("r/ftc took " + str(time.time()-start_time) + " seconds")
-	start_time = time.time()
-	print("Obtaining " + str(how_many) + " comments from reddit.com/r/testingground4bots...")
-	for comment in bot.subreddit('testingground4bots').comments(limit=how_many):
-		if handle_comment(comment, rules_list, awards_list, comments_replied_to):
-			comments_replied_to.append(comment.id)
-	print("r/testingground4bots took " + str(time.time()-start_time) + " seconds")
-	time.sleep(10)
-	return comments_replied_to
+    print("Obtaining " + str(how_many) + " comments from reddit.com/r/ftc...")
+    start_time = time.time()
+    for comment in bot.subreddit('ftc').comments(limit=how_many):
+        if handle_comment(comment, rules_list, awards_list, comments_replied_to):
+            comments_replied_to.append(comment.id)
+    print("r/ftc took " + str(time.time() - start_time) + " seconds")
+    start_time = time.time()
+    print("Obtaining " + str(how_many) + " comments from reddit.com/r/testingground4bots...")
+    for comment in bot.subreddit('testingground4bots').comments(limit=how_many):
+        if handle_comment(comment, rules_list, awards_list, comments_replied_to):
+            comments_replied_to.append(comment.id)
+    print("r/testingground4bots took " + str(time.time() - start_time) + " seconds")
+    time.sleep(10)
+    return comments_replied_to
+
 
 def get_rules_list(rules_list, query_list):
-	good_rules = []
-	for rule in rules_list:
-		is_good = 0
-		is_bad = 0
-		for query in query_list:
-			if (query not in rule[1].lower()) and (query != rule[0].lower()):
-				is_bad+=1
-			else:
-				is_good+=1
-		percent = ( is_good / (is_good+is_bad) )
-		if percent >= .75:
-			good_rules.append(rule)
-	return good_rules
+    good_rules = []
+    for rule in rules_list:
+        is_good = 0
+        is_bad = 0
+        for query in query_list:
+            if (query not in rule[1].lower()) and (query != rule[0].lower()):
+                is_bad += 1
+            else:
+                is_good += 1
+        percent = (is_good / (is_good + is_bad))
+        if percent >= .75:
+            good_rules.append(rule)
+    return good_rules
+
 
 def get_saved_comments():
-	if not os.path.isfile("comments_replied_to.txt"):
-		return []
-	with open("comments_replied_to.txt", "r") as f:
-		comments_replied_to = f.read()
-		comments_replied_to = comments_replied_to.split("\n")
-	return comments_replied_to
-#reload(sys)
-#sys.setdefaultencoding('utf8')
+    if not os.path.isfile("comments_replied_to.txt"):
+        return []
+    with open("comments_replied_to.txt", "r") as f:
+        comments_replied_to = f.read()
+        comments_replied_to = comments_replied_to.split("\n")
+    return comments_replied_to
+
+
+# reload(sys)
+# sys.setdefaultencoding('utf8')
 comments_replied_to = get_saved_comments()
 bot = bot_login()
 while True:
-	comments_replied_to = run_bot(bot, comments_replied_to, rules, awards, 50)
+    comments_replied_to = run_bot(bot, comments_replied_to, rules, awards, 50)
