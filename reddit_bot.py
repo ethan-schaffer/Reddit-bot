@@ -1,10 +1,11 @@
-# skeleton from busterroni (c) February 20, 2017
+# -*- coding: utf-8 -*-
+#  skeleton from busterroni (c) February 20, 2017
 # Video at: https://www.youtube.com/watch?v=A6rTvlgLUWk
 
-import praw
-import config
-import time
-import os
+#import praw
+#import config
+#import time
+#import os
 import re
 import sys
 
@@ -700,7 +701,6 @@ rules.append(("T27", """
 Open-toed or open-backed shoes are not allowed in the Pit Area or in the Competition Area.
 """))
 
-
 def bot_login():
     print("Logging in...")
     r = praw.Reddit(username=config.username,
@@ -710,10 +710,8 @@ def bot_login():
                     user_agent="FTC Rules Bot")
     return r
 
-
 def handle_comment(comment, rules_list, awards_list, comments_replied_to):
     words = comment.body.lower().split(" ")
-    terms = []
     if (words[0].lower() == "!award") and comment.id not in comments_replied_to and comment.author != r.user.me():
         terms = get_rules_list(awards_list, words[1:])
     elif (words[0].lower() == "!rule") and comment.id not in comments_replied_to and comment.author != r.user.me():
@@ -747,6 +745,27 @@ def handle_comment(comment, rules_list, awards_list, comments_replied_to):
         return True
     return False
 
+def handle_query(query, rules_list, awards_list):
+    words = query.lower().split(" ")
+    if (words[0].lower() == "!award"):
+        terms = get_rules_list(awards_list, words[1:])
+    elif (words[0].lower() == "!rule"):
+        terms = get_rules_list(rules_list, words[1:])
+    else:
+        return False
+    reply_text = ""
+    for term in terms:
+        reply_text += term[0] + ":\n" + term[1] + "\n"
+    if (reply_text != ""):
+        print("Going to comment:")
+        print(reply_text)
+        if (len(terms) < 5 and len(reply_text.split("\n")) < 10):
+            print(reply_text)
+        else:
+            # Use PasteBin
+            print("Comment is very long! Using PasteBin API")
+        return True
+    return False
 
 def run_bot(bot, comments_replied_to, rules_list, awards_list, how_many):
     print("Obtaining " + str(how_many) + " comments from reddit.com/r/ftc...")
@@ -764,7 +783,6 @@ def run_bot(bot, comments_replied_to, rules_list, awards_list, how_many):
     time.sleep(10)
     return comments_replied_to
 
-
 def get_rules_list(rules_list, query_list):
     good_rules = []
     for rule in rules_list:
@@ -780,7 +798,6 @@ def get_rules_list(rules_list, query_list):
             good_rules.append(rule)
     return good_rules
 
-
 def get_saved_comments():
     if not os.path.isfile("comments_replied_to.txt"):
         return []
@@ -789,10 +806,15 @@ def get_saved_comments():
         comments_replied_to = comments_replied_to.split("\n")
     return comments_replied_to
 
-
 # reload(sys)
 # sys.setdefaultencoding('utf8')
-comments_replied_to = get_saved_comments()
-bot = bot_login()
-while True:
-    comments_replied_to = run_bot(bot, comments_replied_to, rules, awards, 50)
+useBot = False
+if(useBot):
+    comments_replied_to = get_saved_comments()
+    bot = bot_login()
+    while True:
+        comments_replied_to = run_bot(bot, comments_replied_to, rules, awards, 50)
+else:
+    while True:
+        query = raw_input("What query")
+        handle_query(query, rules, awards)
